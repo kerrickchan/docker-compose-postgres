@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    extends:
+      file: ./docker-compose-postgres.yml
+      service: postgres
+
+  adminer:
+    extends:
+      file: ./docker-compose-postgres.yml
+      service: adminer
