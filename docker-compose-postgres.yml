@@ -6,12 +6,16 @@ services:
     image: postgres:15.4
     restart: unless-stopped
     environment:
+      POSTGRES_USER: root
       POSTGRES_PASSWORD: pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init/postgres/initdb/:/docker-entrypoint-initdb.d/:ro
     port:
       - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U root"]
+      interval: 5s
       timeout: 5s
       retries: 5
 
@@ -19,11 +23,14 @@ services:
     image: adminer
     restart: unless-stopped
     environment:
-      ADMINER_DEFAULT_SERVER: postgres
+      - ADMINER_DEFAULT_SERVER=postgres
     link:
-      postgres:db
+      - postgres:db
     ports:
       - 8080:8080
     depends_on:
       postgres:
         condition: service_healthy
+
+volumes:
+  postgres_data:
