@@ -3,11 +3,12 @@ version: '3.8'
 services:
 
   postgres:
-    image: postgres:16-alpine
+    image: postgres:16.1-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init/postgres/initdb/:/docker-entrypoint-initdb.d/:ro
